@@ -2,14 +2,17 @@ package com.mybank.co.bank;
 
 import java.time.LocalDateTime;
 
-public class Transaction {
+/**
+ * This class represent a transfer between 2 accounts
+ */
+public class Transfer {
     Account from;
     Account to;
     Long amount;
     LocalDateTime dateTime;
     ETransactionStatus status;
 
-    public Transaction(Account from, Account to, Long amount, LocalDateTime dateTime, ETransactionStatus status) {
+    public Transfer(Account from, Account to, Long amount, LocalDateTime dateTime, ETransactionStatus status) {
         this.from = from;
         this.to = to;
         this.amount = amount;
@@ -38,8 +41,11 @@ public class Transaction {
     }
 }
 
-
+/**
+ * This enum represent the different status of a transfer
+ */
 enum ETransactionStatus{
+    NEW,
     PROCESSING,
     READY,
     FAILED

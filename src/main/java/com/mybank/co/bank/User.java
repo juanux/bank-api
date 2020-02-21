@@ -3,6 +3,9 @@ package com.mybank.co.bank;
 import java.util.Date;
 import java.util.UUID;
 
+/**
+ * This class represent all the information of a bank user
+ */
 public class User {
     private UUID id;
     private String name;
@@ -11,9 +14,20 @@ public class User {
     private String documentId;
     private String email;
     private Date birthDay;
-    private String EGender;
+    private EGender gender;
 
-    public User(UUID id, String name, String lastName, EDocumentType documentType, String documentId, String email, Date birthDay, String EGender) {
+    /**
+     * Default user constructor
+     * @param id
+     * @param name
+     * @param lastName
+     * @param documentType
+     * @param documentId
+     * @param email
+     * @param birthDay
+     * @param gender
+     */
+    public User(UUID id, String name, String lastName, EDocumentType documentType, String documentId, String email, Date birthDay, EGender gender) {
         this.id = id;
         this.name = name;
         this.lastName = lastName;
@@ -21,7 +35,7 @@ public class User {
         this.documentId = documentId;
         this.email = email;
         this.birthDay = birthDay;
-        this.EGender = EGender;
+        this.gender = gender;
     }
 
     public UUID getId() {
@@ -52,18 +66,23 @@ public class User {
         return birthDay;
     }
 
-    public String getEGender() {
-        return EGender;
+    public EGender getGender() {
+        return gender;
     }
 }
 
-
+/**
+ * This enum represent the supported document types for an user
+ */
 enum EDocumentType{
     PASSPORT,
     DNI,
     SCN
 }
 
+/**
+ * Gender for an user
+ */
 enum EGender{
     MALE,
     FEMALE

@@ -1,4 +1,4 @@
-package com.mybank.co;
+package com.mybank.co.http;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

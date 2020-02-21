@@ -1,9 +1,10 @@
-package com.mybank.co;
+package com.mybank.co.http;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 
+import com.mybank.co.Main;
 import org.glassfish.grizzly.http.server.HttpServer;
 
 import org.junit.After;
