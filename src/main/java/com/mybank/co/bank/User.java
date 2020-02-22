@@ -1,6 +1,6 @@
 package com.mybank.co.bank;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.UUID;
 
 /**
@@ -13,7 +13,7 @@ public class User {
     private EDocumentType documentType;
     private String documentId;
     private String email;
-    private Date birthDay;
+    private LocalDate birthDay;
     private EGender gender;
 
     /**
@@ -27,7 +27,7 @@ public class User {
      * @param birthDay
      * @param gender
      */
-    public User(UUID id, String name, String lastName, EDocumentType documentType, String documentId, String email, Date birthDay, EGender gender) {
+    public User(UUID id, String name, String lastName, EDocumentType documentType, String documentId, String email, LocalDate birthDay, EGender gender) {
         this.id = id;
         this.name = name;
         this.lastName = lastName;
@@ -62,7 +62,7 @@ public class User {
         return email;
     }
 
-    public Date getBirthDay() {
+    public LocalDate getBirthDay() {
         return birthDay;
     }
 
@@ -71,19 +71,3 @@ public class User {
     }
 }
 
-/**
- * This enum represent the supported document types for an user
- */
-enum EDocumentType{
-    PASSPORT,
-    DNI,
-    SCN
-}
-
-/**
- * Gender for an user
- */
-enum EGender{
-    MALE,
-    FEMALE
-}

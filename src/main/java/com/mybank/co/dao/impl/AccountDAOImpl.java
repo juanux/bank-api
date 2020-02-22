@@ -63,4 +63,16 @@ public class AccountDAOImpl implements IAccountDAO {
                                 acc.getValue(Tables.ACCOUNT.CURRENCY),
                                 acc.getValue(Tables.ACCOUNT.ACTIVE))));
     }
+
+    @Override
+    public CompletableFuture<Optional<AccountRecord>> getAccountById(String id) {
+        return CompletableFuture.supplyAsync(()->
+                dsl.select().from(Tables.ACCOUNT)
+                        .where(Tables.ACCOUNT.ID.eq(id)).fetchOptional()
+                        .map(acc-> new AccountRecord(acc.getValue(Tables.ACCOUNT.ID),
+                                acc.getValue(Tables.ACCOUNT.USER_ID),
+                                acc.getValue(Tables.ACCOUNT.BALANCE),
+                                acc.getValue(Tables.ACCOUNT.CURRENCY),
+                                acc.getValue(Tables.ACCOUNT.ACTIVE))));
+    }
 }

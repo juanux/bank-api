@@ -1,12 +1,14 @@
 package com.mybank.co.bank;
 
+import java.util.function.Function;
+
 /**
  * This class represent an account for an specific user in a specific currency
  */
-public class Account {
+public class Account  {
     private String accountNumber;
     private User user;
-    private Long balance;
+    private Double balance;
     private ECurrency currency;
 
     /**
@@ -16,7 +18,7 @@ public class Account {
      * @param balance
      * @param currency
      */
-    public Account(String accountNumber, User user, Long balance, ECurrency currency) {
+    public Account(String accountNumber, User user, Double balance, ECurrency currency) {
         this.accountNumber = accountNumber;
         this.user = user;
         this.balance = balance;
@@ -31,21 +33,13 @@ public class Account {
         return user;
     }
 
-    public Long getBalance() {
+    public Double getBalance() {
         return balance;
     }
 
     public ECurrency getCurrency() {
         return currency;
     }
+
 }
 
-/**
- * This enum represents the different currencies supported
- */
-enum ECurrency{
-    DOLLAR,
-    EURO,
-    JPY,
-    GBP
-}

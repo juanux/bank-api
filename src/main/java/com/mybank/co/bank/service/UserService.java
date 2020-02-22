@@ -1,4 +1,7 @@
 package com.mybank.co.bank.service;
 
-public class UserService {
+import com.mybank.co.bank.User;
+
+public interface UserService {
+    User createUser();
 }
