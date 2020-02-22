@@ -1,6 +1,8 @@
 package com.mybank.co.dao.impl;
 
+import com.mybank.co.dao.IAccountDAO;
 import com.mybank.co.dao.IUserDAO;
+import com.mybank.co.dao.tables.records.AccountRecord;
 import com.mybank.co.dao.tables.records.UserRecord;
 import org.junit.After;
 import org.junit.Before;
@@ -17,8 +19,9 @@ import java.util.concurrent.CompletableFuture;
 
 import static org.junit.Assert.assertEquals;
 
-public class UserDAOImplTest {
+public class AccountDAOImplTest {
 
+    private IAccountDAO accountDAO;
     private IUserDAO userDAO;
     private Connection conn;
 
@@ -38,6 +41,7 @@ public class UserDAOImplTest {
 
             conn =  DriverManager.getConnection(url, userName, password);
             userDAO = new UserDAOImpl(conn);
+            accountDAO = new AccountDAOImpl(conn);
 
         }catch (Exception e){
             System.out.println("Error connecting to database" );
@@ -52,11 +56,13 @@ public class UserDAOImplTest {
 
     }
 
+
     /**
-     * Test to create an user
+     * Test to create an account
      */
     @Test
-    public void testCreateUser() {
+    public void testCreateAccount() {
+
         UUID userId = UUID.randomUUID();
         UserRecord userRecord = new UserRecord(userId,
                 "name",
@@ -66,23 +72,24 @@ public class UserDAOImplTest {
                 "email@email.com",
                 LocalDate.now(),
                 "MALE");
+        AccountRecord accountRecord = new AccountRecord("01111", userId, 1000D, "EUR", true);
 
-        CompletableFuture<Optional<UserRecord>> optionalCompletableFuture =
-                userDAO.createUser(userRecord)
-                        .thenCompose(r -> userDAO.getUserById(userId));
 
-        optionalCompletableFuture
-                .whenComplete((r,ex)->assertEquals(r, Optional.of(userRecord)));
+        CompletableFuture<Optional<AccountRecord>> optionalCompletableFuture = userDAO.createUser(userRecord)
+                .thenCompose(r -> accountDAO.createAccount(accountRecord))
+                .thenCompose(r -> accountDAO.getAccountByUserId(userId));
 
+        optionalCompletableFuture.whenComplete((r,ex)->assertEquals(r, Optional.of(accountRecord)));
 
     }
 
 
     /**
-     * Test to update an user
+     * Test to create an account
      */
     @Test
-    public void testUpdateUser() {
+    public void testUpdateBalance() {
+
         UUID userId = UUID.randomUUID();
         UserRecord userRecord = new UserRecord(userId,
                 "name",
@@ -92,32 +99,26 @@ public class UserDAOImplTest {
                 "email@email.com",
                 LocalDate.now(),
                 "MALE");
-
-        UserRecord userRecordUpdated = new UserRecord(userId,
-                "nameUpdated",
-                "lastNameUpdated",
-                "DNI",
-                "documentIduPDATED",
-                "emailupdated@email.com",
-                LocalDate.now(),
-                "FEMALE");
+        AccountRecord accountRecord = new AccountRecord("01111", userId, 1000D, "EUR", true);
 
 
-        CompletableFuture<Optional<UserRecord>> optionalCompletableFuture = userDAO.createUser(userRecord)
-                .thenApplyAsync(updated -> userDAO.updateUser(userRecordUpdated))
-                .thenComposeAsync(r -> userDAO.getUserById(userId));
+        CompletableFuture<Optional<AccountRecord>> optionalCompletableFuture = userDAO.createUser(userRecord)
+                .thenCompose(r -> accountDAO.createAccount(accountRecord))
+                .thenCompose(r -> accountDAO.updateBalance(accountRecord.getId(),accountRecord.getBalance() + 2000D))
+                .thenCompose(r -> accountDAO.getAccountByUserId(userId));
 
         optionalCompletableFuture
-                .whenComplete((r,ex)->assertEquals(r, Optional.of(userRecordUpdated)));
-
+                .whenComplete((r,ex)->
+                        assertEquals(r.map(AccountRecord::getBalance).orElseGet(()->0D), 3000D,0D));
 
     }
 
     /**
-     * Test to delete an user
+     * Test to delete an account
      */
     @Test
-    public void testDeleteUser() {
+    public void testDeleteAccount() {
+
         UUID userId = UUID.randomUUID();
         UserRecord userRecord = new UserRecord(userId,
                 "name",
@@ -127,14 +128,17 @@ public class UserDAOImplTest {
                 "email@email.com",
                 LocalDate.now(),
                 "MALE");
+        AccountRecord accountRecord = new AccountRecord("01111", userId, 1000D, "EUR", true);
 
 
-        CompletableFuture<Optional<UserRecord>> optionalCompletableFuture = userDAO.createUser(userRecord)
-                .thenApplyAsync(updated -> userDAO.deleteUser(userId))
-                .thenComposeAsync(r -> userDAO.getUserById(userId));
+        CompletableFuture<Optional<AccountRecord>> optionalCompletableFuture = userDAO.createUser(userRecord)
+                .thenCompose(r -> accountDAO.createAccount(accountRecord))
+                .thenCompose(r -> accountDAO.deleteAccount(accountRecord.getId()))
+                .thenCompose(r -> userDAO.deleteUser(userId))
+                .thenCompose(r -> accountDAO.getAccountByUserId(userId));
 
-        optionalCompletableFuture
-                .whenComplete((r,ex)->assertEquals(r, Optional.empty()));
+        optionalCompletableFuture.whenComplete((r,ex)->assertEquals(r, Optional.empty()));
 
     }
+
 }

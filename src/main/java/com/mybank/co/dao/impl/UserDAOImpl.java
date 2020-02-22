@@ -19,7 +19,7 @@ public class UserDAOImpl implements IUserDAO {
 
     public UserDAOImpl(Connection connection) {
         this.connection = connection;
-        this.dsl = DSL.using(connection, SQLDialect.H2);
+        this.dsl = DSL.using(this.connection, SQLDialect.H2);
     }
 
     @Override
