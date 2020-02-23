@@ -1,8 +1,8 @@
 package com.mybank.co.dao.impl;
 
 import com.mybank.co.dao.IUserDAO;
-import com.mybank.co.dao.Tables;
-import com.mybank.co.dao.tables.records.UserRecord;
+import com.mybank.co.dao.jooq.Tables;
+import com.mybank.co.dao.jooq.tables.records.UserRecord;
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
@@ -19,7 +19,7 @@ public class UserDAOImpl implements IUserDAO {
 
     public UserDAOImpl(Connection connection) {
         this.connection = connection;
-        this.dsl = DSL.using(this.connection, SQLDialect.H2);
+        this.dsl = DSL.using(this.connection, SQLDialect.SQLITE);
     }
 
     @Override
@@ -61,13 +61,13 @@ public class UserDAOImpl implements IUserDAO {
     }
 
     @Override
-    public CompletableFuture<Integer> deleteUser(UUID userId) {
+    public CompletableFuture<Integer> deleteUser(String userId) {
         return CompletableFuture.supplyAsync(() -> dsl.delete(Tables.USER).where(Tables.USER.ID.eq(userId)).execute());
 
     }
 
     @Override
-    public CompletableFuture<Optional<UserRecord>> getUserById(UUID userId) {
+    public CompletableFuture<Optional<UserRecord>> getUserById(String userId) {
 
         return CompletableFuture.supplyAsync(() -> dsl.select().from(Tables.USER).where(Tables.USER.ID.eq(userId)).fetchOptional()
                 .map(r -> new UserRecord(

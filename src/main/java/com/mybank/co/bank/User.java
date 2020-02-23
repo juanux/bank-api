@@ -1,13 +1,14 @@
 package com.mybank.co.bank;
 
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
  * This class represent all the information of a bank user
  */
 public class User {
-    private UUID id;
+    private String id;
     private String name;
     private String lastName;
     private EDocumentType documentType;
@@ -27,7 +28,7 @@ public class User {
      * @param birthDay
      * @param gender
      */
-    public User(UUID id, String name, String lastName, EDocumentType documentType, String documentId, String email, LocalDate birthDay, EGender gender) {
+    public User(String id, String name, String lastName, EDocumentType documentType, String documentId, String email, LocalDate birthDay, EGender gender) {
         this.id = id;
         this.name = name;
         this.lastName = lastName;
@@ -38,7 +39,7 @@ public class User {
         this.gender = gender;
     }
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
@@ -68,6 +69,26 @@ public class User {
 
     public EGender getGender() {
         return gender;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return Objects.equals(getId(), user.getId()) &&
+                Objects.equals(getName(), user.getName()) &&
+                Objects.equals(getLastName(), user.getLastName()) &&
+                getDocumentType() == user.getDocumentType() &&
+                Objects.equals(getDocumentId(), user.getDocumentId()) &&
+                Objects.equals(getEmail(), user.getEmail()) &&
+                Objects.equals(getBirthDay(), user.getBirthDay()) &&
+                getGender() == user.getGender();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getName(), getLastName(), getDocumentType(), getDocumentId(), getEmail(), getBirthDay(), getGender());
     }
 }
 

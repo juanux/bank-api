@@ -6,15 +6,13 @@ package com.mybank.co.http.dto;
 public class AccountDTO implements DTO{
 
     private String accountNumber;
-    private UserDTO user;
-    private Long balance;
+    private Double balance;
     private String currency;
 
     public AccountDTO(){}
 
-    public AccountDTO(String accountNumber, UserDTO user, Long balance, String currency) {
+    public AccountDTO(String accountNumber, Double balance, String currency) {
         this.accountNumber = accountNumber;
-        this.user = user;
         this.balance = balance;
         this.currency = currency;
     }
@@ -27,19 +25,11 @@ public class AccountDTO implements DTO{
         this.accountNumber = accountNumber;
     }
 
-    public UserDTO getUser() {
-        return user;
-    }
-
-    public void setUser(UserDTO user) {
-        this.user = user;
-    }
-
-    public Long getBalance() {
+    public Double getBalance() {
         return balance;
     }
 
-    public void setBalance(Long balance) {
+    public void setBalance(Double balance) {
         this.balance = balance;
     }
 

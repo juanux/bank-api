@@ -1,7 +1,8 @@
 package com.mybank.co.dao.impl;
 
+import com.mybank.co.dao.DatabaseConnection;
 import com.mybank.co.dao.IUserDAO;
-import com.mybank.co.dao.tables.records.UserRecord;
+import com.mybank.co.dao.jooq.tables.records.UserRecord;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,19 +25,10 @@ public class UserDAOImplTest {
 
     @Before
     public void setUp() throws Exception {
-        Properties properties = new Properties();
-        Class.forName("org.h2.Driver");
-
-        InputStream stream = getClass().getClassLoader().getResourceAsStream("mybank.properties");
-        properties.load(stream);
-        String database = properties.getProperty("database.database");
-        String url = properties.getProperty("database.url").concat(getClass().getClassLoader().getResource(database).getPath());
-        String userName = properties.getProperty("database.user");
-        String password = properties.getProperty("database.password");
 
         try {
 
-            conn =  DriverManager.getConnection(url, userName, password);
+            conn =  DatabaseConnection.getConnection();
             userDAO = new UserDAOImpl(conn);
 
         }catch (Exception e){
@@ -57,7 +49,7 @@ public class UserDAOImplTest {
      */
     @Test
     public void testCreateUser() {
-        UUID userId = UUID.randomUUID();
+        String userId = UUID.randomUUID().toString();
         UserRecord userRecord = new UserRecord(userId,
                 "name",
                 "lastName",
@@ -83,7 +75,7 @@ public class UserDAOImplTest {
      */
     @Test
     public void testUpdateUser() {
-        UUID userId = UUID.randomUUID();
+        String userId = UUID.randomUUID().toString();
         UserRecord userRecord = new UserRecord(userId,
                 "name",
                 "lastName",
@@ -118,7 +110,7 @@ public class UserDAOImplTest {
      */
     @Test
     public void testDeleteUser() {
-        UUID userId = UUID.randomUUID();
+        String userId = UUID.randomUUID().toString();
         UserRecord userRecord = new UserRecord(userId,
                 "name",
                 "lastName",

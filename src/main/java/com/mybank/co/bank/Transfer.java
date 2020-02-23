@@ -1,6 +1,7 @@
 package com.mybank.co.bank;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 /**
  * This class represent a transfer between 2 accounts
@@ -39,14 +40,22 @@ public class Transfer {
     public ETransactionStatus getStatus() {
         return status;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Transfer)) return false;
+        Transfer transfer = (Transfer) o;
+        return Objects.equals(getFrom(), transfer.getFrom()) &&
+                Objects.equals(getTo(), transfer.getTo()) &&
+                Objects.equals(getAmount(), transfer.getAmount()) &&
+                Objects.equals(getDateTime(), transfer.getDateTime()) &&
+                getStatus() == transfer.getStatus();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getFrom(), getTo(), getAmount(), getDateTime(), getStatus());
+    }
 }
 
-/**
- * This enum represent the different status of a transfer
- */
-enum ETransactionStatus{
-    NEW,
-    PROCESSING,
-    READY,
-    FAILED
-}

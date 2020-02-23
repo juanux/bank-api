@@ -1,9 +1,10 @@
 package com.mybank.co.dao.impl;
 
+import com.mybank.co.dao.DatabaseConnection;
 import com.mybank.co.dao.IAccountDAO;
 import com.mybank.co.dao.IUserDAO;
-import com.mybank.co.dao.tables.records.AccountRecord;
-import com.mybank.co.dao.tables.records.UserRecord;
+import com.mybank.co.dao.jooq.tables.records.AccountRecord;
+import com.mybank.co.dao.jooq.tables.records.UserRecord;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,19 +28,8 @@ public class AccountDAOImplTest {
 
     @Before
     public void setUp() throws Exception {
-        Properties properties = new Properties();
-        Class.forName("org.h2.Driver");
-
-        InputStream stream = getClass().getClassLoader().getResourceAsStream("mybank.properties");
-        properties.load(stream);
-        String database = properties.getProperty("database.database");
-        String url = properties.getProperty("database.url").concat(getClass().getClassLoader().getResource(database).getPath());
-        String userName = properties.getProperty("database.user");
-        String password = properties.getProperty("database.password");
-
         try {
-
-            conn =  DriverManager.getConnection(url, userName, password);
+            conn = DatabaseConnection.getConnection();
             userDAO = new UserDAOImpl(conn);
             accountDAO = new AccountDAOImpl(conn);
 
@@ -63,7 +53,8 @@ public class AccountDAOImplTest {
     @Test
     public void testCreateAccount() {
 
-        UUID userId = UUID.randomUUID();
+        String userId = UUID.randomUUID().toString();
+        String accountId = UUID.randomUUID().toString();
         UserRecord userRecord = new UserRecord(userId,
                 "name",
                 "lastName",
@@ -72,14 +63,14 @@ public class AccountDAOImplTest {
                 "email@email.com",
                 LocalDate.now(),
                 "MALE");
-        AccountRecord accountRecord = new AccountRecord("01111", userId, 1000D, "EUR", true);
+        AccountRecord accountRecord = new AccountRecord(accountId, userId, 1000D, "EUR", true);
 
 
         CompletableFuture<Optional<AccountRecord>> optionalCompletableFuture = userDAO.createUser(userRecord)
                 .thenCompose(r -> accountDAO.createAccount(accountRecord))
                 .thenCompose(r -> accountDAO.getAccountByUserId(userId));
 
-        optionalCompletableFuture.whenComplete((r,ex)->assertEquals(r, Optional.of(accountRecord)));
+        optionalCompletableFuture.whenComplete((r,ex)->assertEquals( Optional.of(accountRecord),r)).join();
 
     }
 
@@ -90,7 +81,8 @@ public class AccountDAOImplTest {
     @Test
     public void testUpdateBalance() {
 
-        UUID userId = UUID.randomUUID();
+        String userId = UUID.randomUUID().toString();
+        String accountId = UUID.randomUUID().toString();
         UserRecord userRecord = new UserRecord(userId,
                 "name",
                 "lastName",
@@ -99,7 +91,7 @@ public class AccountDAOImplTest {
                 "email@email.com",
                 LocalDate.now(),
                 "MALE");
-        AccountRecord accountRecord = new AccountRecord("01111", userId, 1000D, "EUR", true);
+        AccountRecord accountRecord = new AccountRecord(accountId, userId, 1000D, "EUR", true);
 
 
         CompletableFuture<Optional<AccountRecord>> optionalCompletableFuture = userDAO.createUser(userRecord)
@@ -109,7 +101,7 @@ public class AccountDAOImplTest {
 
         optionalCompletableFuture
                 .whenComplete((r,ex)->
-                        assertEquals(r.map(AccountRecord::getBalance).orElseGet(()->0D), 3000D,0D));
+                        assertEquals(r.map(AccountRecord::getBalance).orElseGet(()->0D), 3000D,0D)).join();
 
     }
 
@@ -119,7 +111,7 @@ public class AccountDAOImplTest {
     @Test
     public void testDeleteAccount() {
 
-        UUID userId = UUID.randomUUID();
+        String userId = UUID.randomUUID().toString();
         UserRecord userRecord = new UserRecord(userId,
                 "name",
                 "lastName",
@@ -137,8 +129,11 @@ public class AccountDAOImplTest {
                 .thenCompose(r -> userDAO.deleteUser(userId))
                 .thenCompose(r -> accountDAO.getAccountByUserId(userId));
 
-        optionalCompletableFuture.whenComplete((r,ex)->assertEquals(r, Optional.empty()));
+        optionalCompletableFuture.whenComplete((r,ex)->assertEquals(r, Optional.empty())).join();
 
     }
+
+
+
 
 }

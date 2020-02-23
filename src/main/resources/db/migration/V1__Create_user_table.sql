@@ -1,10 +1,6 @@
 
-DROP SCHEMA my_bank IF EXISTS;
-
-CREATE SCHEMA my_bank;
-
-create table my_bank.USER (
-    id uuid not null primary key,
+create table USER (
+    id varchar(100) not null primary key,
     name varchar(100) not null,
     last_name varchar(100) not null,
     document_type varchar(50) not null,
@@ -14,16 +10,16 @@ create table my_bank.USER (
     gender char
 );
 
-create table my_bank.ACCOUNT (
+create table ACCOUNT (
     id varchar(100) not null primary key,
-    user_id uuid not null,
+    user_id varchar(100) not null,
     balance double not null,
-    currency varchar(3),
+    currency varchar(10),
     active boolean,
     foreign key (user_id) references USER(id)
 );
 
-create table my_bank.TRANSFER(
+create table TRANSFER(
  id uuid not null primary key,
  source_account_id varchar(100),
  target_account_id varchar(100),

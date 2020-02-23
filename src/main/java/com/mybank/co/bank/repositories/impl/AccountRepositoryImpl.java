@@ -4,8 +4,8 @@ import com.mybank.co.bank.*;
 import com.mybank.co.bank.repositories.IAccountRepository;
 import com.mybank.co.dao.IAccountDAO;
 import com.mybank.co.dao.IUserDAO;
-import com.mybank.co.dao.tables.records.AccountRecord;
-import com.mybank.co.dao.tables.records.UserRecord;
+import com.mybank.co.dao.jooq.tables.records.AccountRecord;
+import com.mybank.co.dao.jooq.tables.records.UserRecord;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -66,7 +66,7 @@ public class AccountRepositoryImpl implements IAccountRepository {
     }
 
     @Override
-    public CompletableFuture<Optional<Account>> getAccountByUserId(UUID userId) {
+    public CompletableFuture<Optional<Account>> getAccountByUserId(String userId) {
         return accountDAO.getAccountByUserId(userId)
                 .thenComposeAsync((maybeAccountRecord) -> {
                     if (maybeAccountRecord.isPresent()) {

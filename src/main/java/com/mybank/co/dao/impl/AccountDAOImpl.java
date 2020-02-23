@@ -1,15 +1,14 @@
 package com.mybank.co.dao.impl;
 
 import com.mybank.co.dao.IAccountDAO;
-import com.mybank.co.dao.Tables;
-import com.mybank.co.dao.tables.records.AccountRecord;
+import com.mybank.co.dao.jooq.Tables;
+import com.mybank.co.dao.jooq.tables.records.AccountRecord;
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 
 import java.sql.Connection;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 public class AccountDAOImpl implements IAccountDAO {
@@ -19,7 +18,7 @@ public class AccountDAOImpl implements IAccountDAO {
 
     public AccountDAOImpl(Connection connection) {
         this.connection = connection;
-        this.dsl = DSL.using(this.connection, SQLDialect.H2);
+        this.dsl = DSL.using(this.connection, SQLDialect.SQLITE);
     }
 
     @Override
@@ -52,7 +51,7 @@ public class AccountDAOImpl implements IAccountDAO {
     }
 
     @Override
-    public CompletableFuture<Optional<AccountRecord>> getAccountByUserId(UUID userId) {
+    public CompletableFuture<Optional<AccountRecord>> getAccountByUserId(String userId) {
 
         return CompletableFuture.supplyAsync(()->
                 dsl.select().from(Tables.ACCOUNT)

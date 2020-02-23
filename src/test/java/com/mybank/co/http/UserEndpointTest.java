@@ -1,10 +1,7 @@
 package com.mybank.co.http;
 
 import com.mybank.co.Main;
-import com.mybank.co.http.dto.ConfirmationDTO;
-import com.mybank.co.http.dto.TransactionListDTO;
-import com.mybank.co.http.dto.TransferDTO;
-import com.mybank.co.http.dto.UserDTO;
+import com.mybank.co.http.dto.*;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.junit.After;
 import org.junit.Before;
@@ -15,7 +12,8 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
+
 
 import static org.junit.Assert.assertEquals;
 
@@ -37,12 +35,16 @@ public class UserEndpointTest {
     }
 
     /**
-     * Test to create an Transfer
+     * Test to create an user account
      */
     @Test
     public void testCreateUser() {
-        UserDTO user = new UserDTO();
-        UserDTO responseMsg = target.path("transaction").request().post(Entity.json(user),UserDTO.class);
+        UserDTO user = new UserDTO(null,"name", "lastName",
+                "PASSPORT",  "documentId",  "email",
+                 LocalDate.of(1985,12,18),  "MALE",
+                new AccountDTO("011123",  1200D, "EURO"));
+
+        UserDTO responseMsg = target.path("user").request().post(Entity.json(user),UserDTO.class);
         assertEquals(responseMsg, user);
     }
 

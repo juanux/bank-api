@@ -2,6 +2,7 @@ package com.mybank.co.bank.repositories.impl;
 
 import com.mybank.co.bank.*;
 import com.mybank.co.bank.repositories.IAccountRepository;
+import com.mybank.co.dao.DatabaseConnection;
 import com.mybank.co.dao.IAccountDAO;
 import com.mybank.co.dao.IUserDAO;
 import com.mybank.co.dao.impl.AccountDAOImpl;
@@ -10,14 +11,15 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
 import static org.junit.Assert.assertEquals;
 
@@ -28,19 +30,10 @@ public class AccountRepositoryImplTest {
 
     @Before
     public void setUp() throws Exception {
-        Properties properties = new Properties();
-        Class.forName("org.h2.Driver");
-
-        InputStream stream = getClass().getClassLoader().getResourceAsStream("mybank.properties");
-        properties.load(stream);
-        String database = properties.getProperty("database.database");
-        String url = properties.getProperty("database.url").concat(getClass().getClassLoader().getResource(database).getPath());
-        String userName = properties.getProperty("database.user");
-        String password = properties.getProperty("database.password");
 
         try {
 
-            conn =  DriverManager.getConnection(url, userName, password);
+            conn = DatabaseConnection.getConnection();
             IUserDAO userDAO = new UserDAOImpl(conn);
             IAccountDAO accountDAO = new AccountDAOImpl(conn);
 
@@ -64,19 +57,20 @@ public class AccountRepositoryImplTest {
      */
     @Test
     public void createAccount(){
-
-        User user = new User(UUID.randomUUID(),  "name",  "lastName",
+        String accountNumber = UUID.randomUUID().toString();
+        String userId =  UUID.randomUUID().toString();
+        User user = new User(userId,  "name",  "lastName",
                 EDocumentType.PASSPORT,  "documentId", "email",
                 LocalDate.now(), EGender.FEMALE);
 
-        String accountNumber = "0001";
+
         Double initialBalance = 120D;
         ECurrency currency = ECurrency.EURO;
         Account expectedAccount = new Account(accountNumber,user,initialBalance,currency);
 
         accountRepository.createNewAccount(user,accountNumber,initialBalance,currency)
         .thenCompose(ac -> accountRepository.getAccountById(ac.getAccountNumber()))
-                .whenComplete((acc,ex)->assertEquals(acc, Optional.of(expectedAccount)));;
+                .whenComplete((acc,ex)->assertEquals(acc, Optional.of(expectedAccount))).join();
 
     }
 
@@ -86,19 +80,20 @@ public class AccountRepositoryImplTest {
     @Test
     public void getAccountByUserId(){
 
-        UUID userId = UUID.randomUUID();
-        User user = new User(UUID.randomUUID(),  "name",  "lastName",
+        String userId = UUID.randomUUID().toString();
+        String accountNumber = UUID.randomUUID().toString();;
+        User user = new User(userId,  "name",  "lastName",
                 EDocumentType.PASSPORT,  "documentId", "email",
                 LocalDate.now(), EGender.FEMALE);
 
-        String accountNumber = "0001";
+
         Double initialBalance = 120D;
         ECurrency currency = ECurrency.EURO;
         Account expectedAccount = new Account(accountNumber,user,initialBalance,currency);
 
         accountRepository.createNewAccount(user,accountNumber,initialBalance,currency)
                 .thenCompose(ac -> accountRepository.getAccountByUserId(ac.getUser().getId()))
-                .whenComplete((acc,ex)->assertEquals(acc, Optional.of(expectedAccount)));;
+                .whenComplete((acc,ex)->assertEquals(acc, Optional.of(expectedAccount))).join();
 
     }
 
@@ -108,20 +103,21 @@ public class AccountRepositoryImplTest {
     @Test
     public void updateAccountBalance(){
 
-        UUID userId = UUID.randomUUID();
-        User user = new User(UUID.randomUUID(),  "name",  "lastName",
+        String userId = UUID.randomUUID().toString();
+        String accountNumber =  UUID.randomUUID().toString();
+        User user = new User(userId,  "name",  "lastName",
                 EDocumentType.PASSPORT,  "documentId", "email",
                 LocalDate.now(), EGender.FEMALE);
 
-        String accountNumber = "0001";
+
         Double initialBalance = 120D;
         ECurrency currency = ECurrency.EURO;
         Account updatedAccount = new Account(accountNumber,user,initialBalance + 1000D,currency);
 
-        CompletableFuture<Optional<Account>> optionalCompletableFuture = accountRepository.createNewAccount(user, accountNumber, initialBalance, currency)
+        accountRepository.createNewAccount(user, accountNumber, initialBalance, currency)
                 .thenCompose(account -> accountRepository.updateAccountBalance(updatedAccount))
                 .thenCompose(updated -> accountRepository.getAccountByUserId(updated.getUser().getId()))
-                .whenComplete((acc, ex) -> assertEquals(acc, Optional.of(updatedAccount)));
+                .whenComplete((acc, ex) -> assertEquals(acc, Optional.of(updatedAccount))).join();
     }
 
 
@@ -131,19 +127,20 @@ public class AccountRepositoryImplTest {
     @Test
     public void deleteAccountBalance(){
 
-        UUID userId = UUID.randomUUID();
-        User user = new User(UUID.randomUUID(),  "name",  "lastName",
+        String userId = UUID.randomUUID().toString();
+        String accountNumber = UUID.randomUUID().toString();
+        User user = new User(userId,  "name",  "lastName",
                 EDocumentType.PASSPORT,  "documentId", "email",
                 LocalDate.now(), EGender.FEMALE);
 
-        String accountNumber = "0001";
+
         Double initialBalance = 120D;
         ECurrency currency = ECurrency.EURO;
 
-        CompletableFuture<Optional<Account>> optionalCompletableFuture = accountRepository.createNewAccount(user, accountNumber, initialBalance, currency)
+        accountRepository.createNewAccount(user, accountNumber, initialBalance, currency)
                 .thenCompose(account -> accountRepository.deleteAccount(account))
                 .thenCompose(updated -> accountRepository.getAccountByUserId(updated.getUser().getId()))
-                .whenComplete((acc, ex) -> assertEquals(acc, Optional.empty()));
+                .whenComplete((acc, ex) -> assertEquals(acc, Optional.empty())).join();
     }
 
 }

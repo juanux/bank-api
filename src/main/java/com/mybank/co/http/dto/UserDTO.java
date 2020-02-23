@@ -1,8 +1,7 @@
 package com.mybank.co.http.dto;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -10,19 +9,19 @@ import java.util.UUID;
  */
 public class UserDTO implements DTO {
 
-    private Optional<UUID> id;
+    private String id;
     private String name;
     private String lastName;
     private String documentType;
     private String documentId;
     private String email;
-    private Date birthDay;
+    private LocalDate birthDay;
     private String gender;
     private AccountDTO account;
 
     public UserDTO(){}
 
-    public UserDTO(Optional<UUID> id, String name, String lastName, String documentType, String documentId, String email, Date birthDay, String gender, AccountDTO account) {
+    public UserDTO(String id, String name, String lastName, String documentType, String documentId, String email, LocalDate birthDay, String gender, AccountDTO account) {
         this.id = id;
         this.name = name;
         this.lastName = lastName;
@@ -34,11 +33,11 @@ public class UserDTO implements DTO {
         this.account = account;
     }
 
-    public Optional<UUID> getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Optional<UUID> id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -82,11 +81,11 @@ public class UserDTO implements DTO {
         this.email = email;
     }
 
-    public Date getBirthDay() {
+    public LocalDate getBirthDay() {
         return birthDay;
     }
 
-    public void setBirthDay(Date birthDay) {
+    public void setBirthDay(LocalDate birthDay) {
         this.birthDay = birthDay;
     }
 
