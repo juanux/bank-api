@@ -4,6 +4,7 @@ import com.mybank.co.bank.*;
 import com.mybank.co.bank.repositories.IAccountRepository;
 import com.mybank.co.bank.repositories.impl.AccountRepositoryImpl;
 import com.mybank.co.bank.service.IAccountService;
+import com.mybank.co.dao.DatabaseConnection;
 import com.mybank.co.dao.IAccountDAO;
 import com.mybank.co.dao.IUserDAO;
 import com.mybank.co.dao.impl.AccountDAOImpl;
@@ -14,7 +15,6 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Optional;
-import java.util.Properties;
 import java.util.UUID;
 
 public class AccountServiceImpl implements IAccountService {
@@ -23,18 +23,9 @@ public class AccountServiceImpl implements IAccountService {
     private Connection conn;
 
     public AccountServiceImpl() throws Exception {
-        Properties properties = new Properties();
-        Class.forName("org.h2.Driver");
-
-        InputStream stream = getClass().getClassLoader().getResourceAsStream("mybank.properties");
-        properties.load(stream);
-        String database = properties.getProperty("database.database");
-        String url = properties.getProperty("database.url").concat(getClass().getClassLoader().getResource(database).getPath());
-        String userName = properties.getProperty("database.user");
-        String password = properties.getProperty("database.password");
 
         try {
-            conn =  DriverManager.getConnection(url, userName, password);
+            conn = DatabaseConnection.getConnection();
             IUserDAO userDAO = new UserDAOImpl(conn);
             IAccountDAO accountDAO = new AccountDAOImpl(conn);
 

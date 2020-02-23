@@ -13,6 +13,7 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 
 import static org.junit.Assert.assertEquals;
@@ -39,12 +40,15 @@ public class UserEndpointTest {
      */
     @Test
     public void testCreateUser() {
-        UserDTO user = new UserDTO(null,"name", "lastName",
+        String accountId = UUID.randomUUID().toString();
+        String userId = UUID.randomUUID().toString();
+        UserDTO user = new UserDTO(userId,"name", "lastName",
                 "PASSPORT",  "documentId",  "email",
                  LocalDate.of(1985,12,18),  "MALE",
-                new AccountDTO("011123",  1200D, "EURO"));
+                new AccountDTO(accountId,  1200D, "EURO"));
 
         UserDTO responseMsg = target.path("user").request().post(Entity.json(user),UserDTO.class);
+
         assertEquals(responseMsg, user);
     }
 
@@ -76,10 +80,20 @@ public class UserEndpointTest {
      */
     @Test
     public void testGetUserById() {
-        UserDTO user = new UserDTO();
-        String id = "id";
-        UserDTO responseMsg = target.path("user/".concat(id)).request().get(UserDTO.class);
+        String accountId = UUID.randomUUID().toString();
+        String userId = UUID.randomUUID().toString();
+        UserDTO user = new UserDTO(userId,"name", "lastName",
+                "PASSPORT",  "documentId",  "email",
+                LocalDate.of(1985,12,18),  "MALE",
+                new AccountDTO(accountId,  1200D, "EURO"));
+
+        UserDTO responseMsg = target.path("user").request().post(Entity.json(user),UserDTO.class);
+
         assertEquals(responseMsg, user);
+
+
+        UserDTO queryResult = target.path("user/".concat(userId)).request().get(UserDTO.class);
+        assertEquals(queryResult, user);
     }
 
 }
