@@ -2,39 +2,18 @@ package com.mybank.co.bank.service.impl;
 
 import com.mybank.co.bank.*;
 import com.mybank.co.bank.repositories.IAccountRepository;
-import com.mybank.co.bank.repositories.impl.AccountRepositoryImpl;
 import com.mybank.co.bank.service.IAccountService;
-import com.mybank.co.dao.DatabaseConnection;
-import com.mybank.co.dao.IAccountDAO;
-import com.mybank.co.dao.IUserDAO;
-import com.mybank.co.dao.impl.AccountDAOImpl;
-import com.mybank.co.dao.impl.UserDAOImpl;
 import com.mybank.co.http.dto.UserDTO;
 
-import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.util.Optional;
 import java.util.UUID;
 
 public class AccountServiceImpl implements IAccountService {
 
     private IAccountRepository repository;
-    private Connection conn;
 
-    public AccountServiceImpl() throws Exception {
-
-        try {
-            conn = DatabaseConnection.getConnection();
-            IUserDAO userDAO = new UserDAOImpl(conn);
-            IAccountDAO accountDAO = new AccountDAOImpl(conn);
-
-            repository = new AccountRepositoryImpl(userDAO,accountDAO);
-
-        }catch (Exception e){
-            System.out.println("Error connecting to database" );
-            throw e;
-        }
+    public AccountServiceImpl(IAccountRepository repository) throws Exception {
+        this.repository = repository;
     }
 
     @Override
@@ -71,7 +50,10 @@ public class AccountServiceImpl implements IAccountService {
 
     @Override
     public Double transfer(Account origin, Account target, Double amount) {
-        return null;
+         return repository.updateAccountBalance(new Account(origin.getAccountNumber(), origin.getUser(), origin.getBalance() - amount, origin.getCurrency()))
+                .thenCompose(a-> repository.updateAccountBalance(new Account(target.getAccountNumber(), target.getUser(), target.getBalance() + amount, target.getCurrency())))
+        .join().getBalance();
+
     }
 
 

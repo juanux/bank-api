@@ -9,11 +9,11 @@ import java.util.Objects;
 public class Transfer {
     Account from;
     Account to;
-    Long amount;
+    Double amount;
     LocalDateTime dateTime;
     ETransactionStatus status;
 
-    public Transfer(Account from, Account to, Long amount, LocalDateTime dateTime, ETransactionStatus status) {
+    public Transfer(Account from, Account to, Double amount, LocalDateTime dateTime, ETransactionStatus status) {
         this.from = from;
         this.to = to;
         this.amount = amount;
@@ -29,7 +29,7 @@ public class Transfer {
         return to;
     }
 
-    public Long getAmount() {
+    public Double getAmount() {
         return amount;
     }
 

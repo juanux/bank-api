@@ -16,6 +16,8 @@ public class TransactionEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public DTO createTransfer(TransferDTO transferDTO){
+
+
         return new ConfirmationDTO();
     }
 
