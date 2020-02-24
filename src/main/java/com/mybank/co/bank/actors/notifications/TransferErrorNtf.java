@@ -1,5 +1,8 @@
 package com.mybank.co.bank.actors.notifications;
 
+/**
+ * This class represent a error event in the execution of an transaction
+ */
 public class TransferErrorNtf {
 
     private String message;

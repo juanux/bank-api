@@ -68,13 +68,6 @@ public class UserEndpoint {
 
     }
 
-    @PUT
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public DTO updateUser(UserDTO user) {
-
-        return new UserDTO();
-    }
 
     @DELETE
     @Path("{accountId}")

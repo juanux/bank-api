@@ -7,6 +7,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+/**
+ * This class provide access to the local database using SQLITE driver
+ */
 public  class DatabaseConnection {
 
     public static Connection getConnection() throws ClassNotFoundException, IOException, SQLException {

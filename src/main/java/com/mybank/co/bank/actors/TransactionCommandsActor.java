@@ -14,6 +14,9 @@ import com.mybank.co.bank.service.IAccountService;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+/**
+ * This class represent an actor with the responsibility of execute transaction in concurrent safe way
+ */
 public class TransactionCommandsActor extends AbstractActor {
 
     private ActorRef eventsActor;

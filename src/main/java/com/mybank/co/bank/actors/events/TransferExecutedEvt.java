@@ -2,6 +2,9 @@ package com.mybank.co.bank.actors.events;
 
 import com.mybank.co.bank.Transfer;
 
+/**
+ * This class represent the event of a transaction executed
+ */
 public class TransferExecutedEvt {
     private Transfer transfer;
 

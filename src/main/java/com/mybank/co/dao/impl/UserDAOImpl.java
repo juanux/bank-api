@@ -11,6 +11,9 @@ import java.sql.Connection;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * Implementation of data access operations for users
+ */
 public class UserDAOImpl implements IUserDAO {
 
     private Connection connection;

@@ -12,6 +12,9 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
+/**
+ * Implementation of Transaction repository
+ */
 public class TransactionsRepositoryImpl implements ITransactionsRepository {
 
     ITransactionDAO transactionDAO;

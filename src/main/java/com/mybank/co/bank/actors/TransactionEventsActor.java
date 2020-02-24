@@ -7,6 +7,9 @@ import com.mybank.co.bank.Transfer;
 import com.mybank.co.bank.actors.events.TransferExecutedEvt;
 import com.mybank.co.bank.repositories.ITransactionsRepository;
 
+/**
+ * This Actor have the responsibility of react to successful executed transaction and update the view
+ */
 public class TransactionEventsActor extends AbstractActor {
 
     private ITransactionsRepository repository;

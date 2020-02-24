@@ -8,6 +8,9 @@ import com.mybank.co.http.dto.UserDTO;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Implementation for Account service
+ */
 public class AccountServiceImpl implements IAccountService {
 
     private IAccountRepository repository;

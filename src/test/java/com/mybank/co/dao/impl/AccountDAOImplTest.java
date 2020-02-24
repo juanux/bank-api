@@ -9,12 +9,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.InputStream;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.time.LocalDate;
 import java.util.Optional;
-import java.util.Properties;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -76,7 +73,7 @@ public class AccountDAOImplTest {
 
 
     /**
-     * Test to create an account
+     * Test to update balance
      */
     @Test
     public void testUpdateBalance() {

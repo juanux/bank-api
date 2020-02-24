@@ -48,7 +48,6 @@ public class UserEndpointTest {
 
     }
 
-
     @Before
     public void setUp() throws Exception {
 
@@ -95,18 +94,6 @@ public class UserEndpointTest {
 
         UserDTO responseMsg = target.path("user").request().post(Entity.json(user),UserDTO.class);
 
-        assertEquals(responseMsg, user);
-    }
-
-
-
-    /**
-     * Test to update an User
-     */
-    @Test
-    public void testUpdateUser() {
-        UserDTO user = new UserDTO();
-        UserDTO responseMsg = target.path("user").request().put(Entity.json(user),UserDTO.class);
         assertEquals(responseMsg, user);
     }
 

@@ -4,8 +4,6 @@ import com.mybank.co.dao.ITransactionDAO;
 import com.mybank.co.dao.jooq.Tables;
 import com.mybank.co.dao.jooq.tables.records.TransferRecord;
 import org.jooq.DSLContext;
-import org.jooq.Record;
-import org.jooq.Result;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 
@@ -13,6 +11,9 @@ import java.sql.Connection;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * Implementation of data access operations for transactions
+ */
 public class TransactionDAOImpl implements ITransactionDAO {
 
     private Connection connection;

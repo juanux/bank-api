@@ -1,5 +1,8 @@
 package com.mybank.co.bank.actors.commands;
 
+/**
+ * This class represent a command to execute a new transfer
+ */
 public class ExecuteTransferCmd {
 
     private String sourceAccount;

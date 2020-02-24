@@ -11,6 +11,9 @@ import java.sql.Connection;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * implementation operation for data access for an account
+ */
 public class AccountDAOImpl implements IAccountDAO {
 
     private Connection connection;

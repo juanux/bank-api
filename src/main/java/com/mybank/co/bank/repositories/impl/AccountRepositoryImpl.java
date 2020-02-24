@@ -10,6 +10,9 @@ import com.mybank.co.dao.jooq.tables.records.UserRecord;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * Implementation of repository operations for an account
+ */
 public class AccountRepositoryImpl implements IAccountRepository {
 
     private IUserDAO userDAO;
