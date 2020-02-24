@@ -7,13 +7,13 @@ import java.util.Objects;
  * This class represent a transfer between 2 accounts
  */
 public class Transfer {
-    Account from;
-    Account to;
-    Long amount;
+    String from;
+    String to;
+    Double amount;
     LocalDateTime dateTime;
     ETransactionStatus status;
 
-    public Transfer(Account from, Account to, Long amount, LocalDateTime dateTime, ETransactionStatus status) {
+    public Transfer(String from, String to, Double amount, LocalDateTime dateTime, ETransactionStatus status) {
         this.from = from;
         this.to = to;
         this.amount = amount;
@@ -21,15 +21,15 @@ public class Transfer {
         this.status = status;
     }
 
-    public Account getFrom() {
+    public String getFrom() {
         return from;
     }
 
-    public Account getTo() {
+    public String getTo() {
         return to;
     }
 
-    public Long getAmount() {
+    public Double getAmount() {
         return amount;
     }
 

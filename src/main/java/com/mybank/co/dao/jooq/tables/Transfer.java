@@ -8,10 +8,8 @@ import com.mybank.co.dao.jooq.DefaultSchema;
 import com.mybank.co.dao.jooq.Keys;
 import com.mybank.co.dao.jooq.tables.records.TransferRecord;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
@@ -33,7 +31,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Transfer extends TableImpl<TransferRecord> {
 
-    private static final long serialVersionUID = 1018587701;
+    private static final long serialVersionUID = -826393470;
 
     /**
      * The reference instance of <code>TRANSFER</code>
@@ -51,7 +49,7 @@ public class Transfer extends TableImpl<TransferRecord> {
     /**
      * The column <code>TRANSFER.id</code>.
      */
-    public final TableField<TransferRecord, UUID> ID = createField(DSL.name("id"), org.jooq.impl.SQLDataType.UUID.nullable(false), this, "");
+    public final TableField<TransferRecord, String> ID = createField(DSL.name("id"), org.jooq.impl.SQLDataType.VARCHAR(100).nullable(false), this, "");
 
     /**
      * The column <code>TRANSFER.source_account_id</code>.
@@ -71,7 +69,7 @@ public class Transfer extends TableImpl<TransferRecord> {
     /**
      * The column <code>TRANSFER.date_time</code>.
      */
-    public final TableField<TransferRecord, LocalDateTime> DATE_TIME = createField(DSL.name("date_time"), org.jooq.impl.SQLDataType.LOCALDATETIME, this, "");
+    public final TableField<TransferRecord, String> DATE_TIME = createField(DSL.name("date_time"), org.jooq.impl.SQLDataType.VARCHAR(100), this, "");
 
     /**
      * The column <code>TRANSFER.status</code>.
@@ -170,7 +168,7 @@ public class Transfer extends TableImpl<TransferRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row6<UUID, String, String, Double, LocalDateTime, String> fieldsRow() {
+    public Row6<String, String, String, Double, String, String> fieldsRow() {
         return (Row6) super.fieldsRow();
     }
 }

@@ -10,13 +10,13 @@ public class TransferDTO implements DTO {
 
     private String originAccountId;
     private String targetAccountId;
-    private Long amount;
+    private Double amount;
     private String status;
     private LocalDateTime dateTime;
 
     public TransferDTO(){}
 
-    public TransferDTO(String originAccountId, String targetAccountId, Long amount, String status, LocalDateTime dateTime) {
+    public TransferDTO(String originAccountId, String targetAccountId, Double amount, String status, LocalDateTime dateTime) {
         this.originAccountId = originAccountId;
         this.targetAccountId = targetAccountId;
         this.amount = amount;
@@ -40,11 +40,11 @@ public class TransferDTO implements DTO {
         this.targetAccountId = targetAccountId;
     }
 
-    public Long getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(Long amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 

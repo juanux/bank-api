@@ -20,11 +20,11 @@ create table ACCOUNT (
 );
 
 create table TRANSFER(
- id uuid not null primary key,
+ id varchar(100) not null primary key,
  source_account_id varchar(100),
  target_account_id varchar(100),
  amount double,
- date_time timestamp,
+ date_time varchar(100),
  status varchar(50),
  foreign key (source_account_id) references ACCOUNT(id),
  foreign key (target_account_id) references ACCOUNT(id)

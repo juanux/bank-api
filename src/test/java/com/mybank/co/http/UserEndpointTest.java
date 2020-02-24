@@ -1,6 +1,23 @@
 package com.mybank.co.http;
 
+import akka.actor.ActorRef;
+import akka.actor.ActorSystem;
 import com.mybank.co.Main;
+import com.mybank.co.bank.actors.TransactionCommandsActor;
+import com.mybank.co.bank.actors.TransactionEventsActor;
+import com.mybank.co.bank.repositories.IAccountRepository;
+import com.mybank.co.bank.repositories.ITransactionsRepository;
+import com.mybank.co.bank.repositories.impl.AccountRepositoryImpl;
+import com.mybank.co.bank.repositories.impl.TransactionsRepositoryImpl;
+import com.mybank.co.bank.service.IAccountService;
+import com.mybank.co.bank.service.impl.AccountServiceImpl;
+import com.mybank.co.dao.DatabaseConnection;
+import com.mybank.co.dao.IAccountDAO;
+import com.mybank.co.dao.ITransactionDAO;
+import com.mybank.co.dao.IUserDAO;
+import com.mybank.co.dao.impl.AccountDAOImpl;
+import com.mybank.co.dao.impl.TransactionDAOImpl;
+import com.mybank.co.dao.impl.UserDAOImpl;
 import com.mybank.co.http.dto.*;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.junit.After;
@@ -12,6 +29,7 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 
+import java.sql.Connection;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -22,16 +40,44 @@ public class UserEndpointTest {
 
     private HttpServer server;
     private WebTarget target;
+    private static ActorSystem system = ActorSystem.create("bank-test-system");
+    ActorRef eventHandlerActor;
+    ActorRef commandHandlerActor;
+
+    public UserEndpointTest() throws Exception {
+
+    }
+
 
     @Before
     public void setUp() throws Exception {
-        server = Main.startServer();
+
+        Connection conn= DatabaseConnection.getConnection();
+
+        IUserDAO userDAO = new UserDAOImpl(conn);
+        IAccountDAO accountDAO = new AccountDAOImpl(conn);
+        ITransactionDAO transactionDAO = new TransactionDAOImpl(conn);
+
+        IAccountRepository accountRepository = new AccountRepositoryImpl(userDAO,accountDAO);
+        ITransactionsRepository transactionLogRepository = new TransactionsRepositoryImpl(transactionDAO);
+        IAccountService service= new AccountServiceImpl(accountRepository);
+
+        eventHandlerActor
+                = system.actorOf( TransactionEventsActor.props(transactionLogRepository), "eventHandlerActor-test-2");
+        commandHandlerActor
+                = system.actorOf( TransactionCommandsActor.props(eventHandlerActor,service), "commandHandlerActor-test-2");
+
+
+        server = Main.startServer(service,transactionLogRepository,commandHandlerActor);
+
         Client c = ClientBuilder.newClient();
         target = c.target(Main.BASE_URI);
     }
 
     @After
     public void tearDown() throws Exception {
+        system.stop(eventHandlerActor);
+        system.stop(commandHandlerActor);
         server.stop();
     }
 

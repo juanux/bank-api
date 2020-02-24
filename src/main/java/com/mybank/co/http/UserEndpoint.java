@@ -1,33 +1,24 @@
 package com.mybank.co.http;
 
 import com.mybank.co.bank.Account;
-import com.mybank.co.bank.ECurrency;
-import com.mybank.co.bank.User;
-import com.mybank.co.bank.repositories.IAccountRepository;
-import com.mybank.co.bank.repositories.impl.AccountRepositoryImpl;
 import com.mybank.co.bank.service.IAccountService;
-import com.mybank.co.bank.service.impl.AccountServiceImpl;
 import com.mybank.co.http.dto.AccountDTO;
 import com.mybank.co.http.dto.DTO;
 import com.mybank.co.http.dto.UserDTO;
 import com.mybank.co.http.dto.error.InvalidUserError;
 
+import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
 
 @Path("user")
 public class UserEndpoint {
 
+    @Inject
     IAccountService service;
-
-    public UserEndpoint() throws Exception {
-        this.service = new AccountServiceImpl();
-    }
 
     @GET
     @Path("{userId}")
