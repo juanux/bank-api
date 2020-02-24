@@ -127,6 +127,8 @@ This Api allows create accounts and trnasfer money betweet accounts un a concurr
   "lastName": "Morales",
   "name": "Juan"
 }`
+
+
 **Error responses:**  
 
 
@@ -159,6 +161,8 @@ This Api allows create accounts and trnasfer money betweet accounts un a concurr
   "lastName": "Morales",
   "name": "Juan"
 }`
+
+
 **Error responses:**  
 
 
@@ -181,6 +185,8 @@ This Api allows create accounts and trnasfer money betweet accounts un a concurr
 	"targetAccountId":"11",
 	"amount": 50
 }`       
+
+
 **Response body:**      
 
 
@@ -188,6 +194,7 @@ This Api allows create accounts and trnasfer money betweet accounts un a concurr
   "code": "OK",
   "message": "Transaction sucess"
 }`
+ 
  
 **Error responses:** 
 
@@ -200,6 +207,7 @@ This Api allows create accounts and trnasfer money betweet accounts un a concurr
   "message": "Account does not exist"
 }`
 
+
 ***Incompatible currencies:*** 
 
 
@@ -207,6 +215,7 @@ This Api allows create accounts and trnasfer money betweet accounts un a concurr
   "code": "Error",
   "message": "Incompatible currencies EURO - DOLLAR"
 }`
+
 
 ***Not founds enough to make the transfer:*** 
 
