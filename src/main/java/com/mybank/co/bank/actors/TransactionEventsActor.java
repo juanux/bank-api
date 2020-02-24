@@ -1,24 +1,32 @@
 package com.mybank.co.bank.actors;
 
 import akka.actor.AbstractActor;
+import akka.actor.ActorRef;
 import akka.actor.Props;
-import com.mybank.co.bank.service.IAccountService;
+import com.mybank.co.bank.Transfer;
+import com.mybank.co.bank.actors.events.TransferExecutedEvt;
+import com.mybank.co.bank.repositories.ITransactionsRepository;
 
 public class TransactionEventsActor extends AbstractActor {
 
-    private IAccountService service;
+    private ITransactionsRepository repository;
 
-    public TransactionEventsActor(IAccountService service) {
-        this.service = service;
+    public TransactionEventsActor(ITransactionsRepository service) {
+        this.repository = service;
     }
 
     @Override
     public Receive createReceive() {
-        return receiveBuilder().build();
+
+        return receiveBuilder().match(TransferExecutedEvt.class,evt->{
+            ActorRef sender = getSender();
+            Transfer transfer = repository.saveTransaction(evt.getTransfer()).join();
+            sender.tell(transfer,getSelf());
+
+        }).build();
     }
 
-
-    public static Props props(IAccountService service) {
-        return Props.create(TransactionEventsActor.class, service);
+    public static Props props(ITransactionsRepository repository) {
+        return Props.create(TransactionEventsActor.class, repository);
     }
 }

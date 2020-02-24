@@ -9,7 +9,6 @@ import org.jooq.impl.DSL;
 
 import java.sql.Connection;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 public class UserDAOImpl implements IUserDAO {

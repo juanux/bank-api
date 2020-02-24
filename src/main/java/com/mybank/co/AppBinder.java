@@ -1,8 +1,8 @@
 package com.mybank.co;
 
 import akka.actor.ActorRef;
+import com.mybank.co.bank.repositories.ITransactionsRepository;
 import com.mybank.co.bank.service.IAccountService;
-import com.mybank.co.http.TransactionEndpoint;
 import org.glassfish.jersey.internal.inject.AbstractBinder;
 
 
@@ -10,10 +10,12 @@ public class AppBinder extends AbstractBinder {
 
     private IAccountService service;
     private ActorRef commandHandlerActor;
+    private ITransactionsRepository transactionLogRepository;
 
-    public AppBinder(IAccountService service, ActorRef commandHandlerActor) throws Exception {
+    public AppBinder(IAccountService service,ITransactionsRepository transactionLogRepository, ActorRef commandHandlerActor) throws Exception {
         this.service = service;
         this.commandHandlerActor = commandHandlerActor;
+        this.transactionLogRepository = transactionLogRepository;
     }
 
     @Override
@@ -21,6 +23,7 @@ public class AppBinder extends AbstractBinder {
 
         bind(service).to(IAccountService.class);
         bind(commandHandlerActor).to(ActorRef.class);
+        bind(transactionLogRepository).to(ITransactionsRepository.class);
     }
 
 

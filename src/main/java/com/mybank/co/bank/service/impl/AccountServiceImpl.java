@@ -45,6 +45,12 @@ public class AccountServiceImpl implements IAccountService {
 
     @Override
     public Account deleteAccount(String accountId) {
+        Optional<Account> acc =repository.getAccountById(accountId).join();
+        if(acc.isPresent()){
+            Account account = acc.get();
+            repository.deleteAccount(account).join();
+            return account;
+        }
         return null;
     }
 
@@ -55,8 +61,6 @@ public class AccountServiceImpl implements IAccountService {
         .join().getBalance();
 
     }
-
-
 
 
     private Account fromDto(UserDTO userDTO) throws IllegalArgumentException {

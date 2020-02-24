@@ -8,7 +8,6 @@ import com.mybank.co.dao.jooq.tables.records.AccountRecord;
 import com.mybank.co.dao.jooq.tables.records.UserRecord;
 
 import java.util.Optional;
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 public class AccountRepositoryImpl implements IAccountRepository {

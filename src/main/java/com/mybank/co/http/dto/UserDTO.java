@@ -21,7 +21,8 @@ public class UserDTO implements DTO {
 
     public UserDTO(){}
 
-    public UserDTO(String id, String name, String lastName, String documentType, String documentId, String email, LocalDate birthDay, String gender, AccountDTO account) {
+    public UserDTO(String id, String name, String lastName, String documentType, String documentId,
+                   String email, LocalDate birthDay, String gender, AccountDTO account) {
         this.id = id;
         this.name = name;
         this.lastName = lastName;

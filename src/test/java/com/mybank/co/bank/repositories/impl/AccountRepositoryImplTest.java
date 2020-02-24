@@ -11,14 +11,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Optional;
-import java.util.Properties;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;

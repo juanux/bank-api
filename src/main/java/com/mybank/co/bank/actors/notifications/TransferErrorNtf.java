@@ -1,10 +1,10 @@
 package com.mybank.co.bank.actors.notifications;
 
-public class TransferError {
+public class TransferErrorNtf {
 
     private String message;
 
-    public TransferError(String message) {
+    public TransferErrorNtf(String message) {
         this.message = message;
     }
 

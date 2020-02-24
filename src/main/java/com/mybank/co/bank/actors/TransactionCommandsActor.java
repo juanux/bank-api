@@ -8,7 +8,7 @@ import com.mybank.co.bank.ETransactionStatus;
 import com.mybank.co.bank.Transfer;
 import com.mybank.co.bank.actors.commands.ExecuteTransferCmd;
 import com.mybank.co.bank.actors.events.TransferExecutedEvt;
-import com.mybank.co.bank.actors.notifications.TransferError;
+import com.mybank.co.bank.actors.notifications.TransferErrorNtf;
 import com.mybank.co.bank.service.IAccountService;
 
 import java.time.LocalDateTime;
@@ -40,19 +40,19 @@ public class TransactionCommandsActor extends AbstractActor {
                     if(sourceAccount.getCurrency() == targetAccount.getCurrency()){
 
                         service.transfer(sourceAccount,targetAccount,evt.getAmount());
-                        Transfer transfer = new Transfer(sourceAccount, targetAccount,evt.getAmount(), LocalDateTime.now(), ETransactionStatus.READY);
+                        Transfer transfer = new Transfer(sourceAccount.getAccountNumber(), targetAccount.getAccountNumber(),evt.getAmount(), LocalDateTime.now(), ETransactionStatus.READY);
                         eventsActor.tell(new TransferExecutedEvt(transfer),sender);
 
                     }else{
-                        sender.tell(new TransferError("Incompatible currencies " + sourceAccount.getCurrency() + " - " + targetAccount.getCurrency()), getSelf());
+                        sender.tell(new TransferErrorNtf("Incompatible currencies " + sourceAccount.getCurrency() + " - " + targetAccount.getCurrency()), getSelf());
                     }
 
                 }else{
-                    sender.tell(new TransferError("Not founds enough to make the transfer."), getSelf());
+                    sender.tell(new TransferErrorNtf("Not founds enough to make the transfer."), getSelf());
                 }
 
             }else{
-                sender.tell(new TransferError("Account don't exist"), getSelf());
+                sender.tell(new TransferErrorNtf("Account don't exist"), getSelf());
             }
 
         }).build();
