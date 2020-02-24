@@ -202,7 +202,7 @@ public class TransactionEndPointTest {
 
 
         TransferDTO transfer = new TransferDTO(ac1.getAccountNumber(),"xxx", 5000D, "NEW", LocalDateTime.now());
-        TransferError response = new TransferError("Error", "Account don't exist");
+        TransferError response = new TransferError("Error", "Account does not exist");
         TransferError responseMsg = target.path("transaction").request().post(Entity.json(transfer), TransferError.class);
 
         TransactionListDTO queryResponse = target.path("transaction/" + accountNumber1).request(MediaType.APPLICATION_JSON).get(TransactionListDTO.class);

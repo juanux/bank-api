@@ -55,7 +55,7 @@ public class TransactionCommandsActor extends AbstractActor {
                 }
 
             }else{
-                sender.tell(new TransferErrorNtf("Account don't exist"), getSelf());
+                sender.tell(new TransferErrorNtf("Account does not exist"), getSelf());
             }
 
         }).build();
