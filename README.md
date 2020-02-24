@@ -62,7 +62,9 @@ This Api allows create accounts and trnasfer money betweet accounts un a concurr
   "name": "Juan"
 }`
 
-**Error responses:**      
+**Error responses:**    
+
+  
 ***Creating an user with an existent account id***
 
 
@@ -126,6 +128,8 @@ This Api allows create accounts and trnasfer money betweet accounts un a concurr
   "name": "Juan"
 }`
 **Error responses:**  
+
+
 ***User not found:*** 
 
 
@@ -156,6 +160,8 @@ This Api allows create accounts and trnasfer money betweet accounts un a concurr
   "name": "Juan"
 }`
 **Error responses:**  
+
+
 ***User not found:*** 
 
 
@@ -184,6 +190,8 @@ This Api allows create accounts and trnasfer money betweet accounts un a concurr
 }`
  
 **Error responses:** 
+
+
 ***Account not found:*** 
 
 
