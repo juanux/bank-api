@@ -26,6 +26,8 @@ This Api allows create accounts and trnasfer money betweet accounts un a concurr
 **Method:** POST   
 **Request body:**
 
+
+
 `{
 	"name":"Juan",  
 	"lastName":"Morales",  
@@ -42,6 +44,8 @@ This Api allows create accounts and trnasfer money betweet accounts un a concurr
 } `   
 
 **Request response:**
+
+
 `{
   "account": {
     "accountNumber": "222",
@@ -60,6 +64,8 @@ This Api allows create accounts and trnasfer money betweet accounts un a concurr
 
 **Error responses:**      
 ***Creating an user with an existent account id***
+
+
 `{
   "code": "400",
   "message": "The given account number already exist"
@@ -67,24 +73,32 @@ This Api allows create accounts and trnasfer money betweet accounts un a concurr
 
 
 ***Invalid Document type:*** Valid document types are PASSPORT,DNI and SCN
+
+
 `{
   "code": "400",
   "message": "Invalid document type"
 }`
 
 ***Invalid Currency:*** Valid document types are DOLLAR,EURO,JPY and GBP
+
+
 `{
   "code": "400",
   "message": "Currency not supported"
 }`
 
 ***Invalid Gender:*** Valid document types are MALE, FEMALE
+
+
 `{
   "code": "400",
   "message": "Invalid  gender"
 }`
 
 ***Invalid initial balance:*** 
+
+
 `{
   "code": "400",
   "message": "Balance must be higher tha 0"
@@ -94,6 +108,8 @@ This Api allows create accounts and trnasfer money betweet accounts un a concurr
 **Url:**   http://localhost:8089/mybank/user/account/{accountId}
 **Method:** GET   
 **Response body:**
+
+
 `{
   "account": {
     "accountNumber": "22",
@@ -111,6 +127,8 @@ This Api allows create accounts and trnasfer money betweet accounts un a concurr
 }`
 **Error responses:**  
 ***User not found:*** 
+
+
 `{
   "code": "404",
   "message": "User not found."
@@ -120,6 +138,8 @@ This Api allows create accounts and trnasfer money betweet accounts un a concurr
 **Url:**   http://localhost:8089/mybank/user/{userId}
 **Method:** GET   
 **Response body:**
+
+
 `{
   "account": {
     "accountNumber": "22",
@@ -137,6 +157,8 @@ This Api allows create accounts and trnasfer money betweet accounts un a concurr
 }`
 **Error responses:**  
 ***User not found:*** 
+
+
 `{
   "code": "404",
   "message": "User not found."
@@ -146,12 +168,16 @@ This Api allows create accounts and trnasfer money betweet accounts un a concurr
 **Url:**    http://localhost:8080/mybank/transaction     
 **Method:** POST      
 **Request body:**    
+
+
 `{
 	"originAccountId":"22",
 	"targetAccountId":"11",
 	"amount": 50
 }`       
 **Response body:**      
+
+
 `{
   "code": "OK",
   "message": "Transaction sucess"
@@ -159,18 +185,24 @@ This Api allows create accounts and trnasfer money betweet accounts un a concurr
  
 **Error responses:** 
 ***Account not found:*** 
-{
+
+
+`{
   "code": "Error",
   "message": "Account does not exist"
-}
+}`
 
 ***Incompatible currencies:*** 
+
+
 `{
   "code": "Error",
   "message": "Incompatible currencies EURO - DOLLAR"
 }`
 
 ***Not founds enough to make the transfer:*** 
+
+
 `{
   "code": "Error",
   "message": "Not founds enough to make the transfer."
